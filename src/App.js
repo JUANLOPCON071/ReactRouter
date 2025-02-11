@@ -8,6 +8,7 @@ import { LoginPage } from './LoginPage';
 import './App.css';
 import { LogoutPage } from './LogoutPage';
 import { AuthProvider, AuthRoute } from './auth';
+import { NewBlogPostPage } from './NewBlogPostPage';
 
 function App() {
   return (
@@ -23,6 +24,15 @@ function App() {
               <Route path=':slug' element={<BlogPost/>} />
             </Route>
             
+            <Route 
+              path='/newblog' 
+              element={
+                <AuthRoute>
+                  <NewBlogPostPage/>
+                </AuthRoute>
+              } 
+            />
+
             <Route path='/login' element={<LoginPage/>} />
             <Route 
               path='/logout' 

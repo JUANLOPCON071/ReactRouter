@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { blogdata } from "./blogdata";
 import { useAuth } from "./auth";
 
 function BlogPost() {
@@ -8,7 +7,16 @@ function BlogPost() {
     const navigate = useNavigate();
     const { slug } = useParams();
 
-    const blogpost = blogdata.find(post => post.slug === slug);
+    const blogpost = auth.blogdata.find(post => post.slug === slug);
+
+    if (!blogpost) {
+        return (
+            <div>
+                <h2>Blog post no encontrado 😢</h2>
+                <button onClick={() => navigate('/blog')}>Volver al blog</button>
+            </div>
+        );
+    }
 
     const canDelete = auth.user?.isAdmin || blogpost.author === auth.user?.username;
 

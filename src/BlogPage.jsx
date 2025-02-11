@@ -1,8 +1,10 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
-import { blogdata } from "./blogdata";
+import { useAuth } from "./auth";
 
 function BlogPage() {
+    const auth = useAuth();
+    
     return (
         <>
             <h1>BlogPage</h1>
@@ -10,10 +12,16 @@ function BlogPage() {
             <Outlet/>
 
             <ul>
-                {blogdata.map(post => (
+                {auth.blogdata.map(post => (
                     <BlogLink key={post.slug} post={post}/>
                 ))}
             </ul>
+
+            {auth.user && (
+                <Link to='/newblog'>
+                    <button>Crear blogpost</button>
+                </Link>
+            )}
         </>
     )
 }

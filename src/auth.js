@@ -8,6 +8,26 @@ const AuthContext = React.createContext();
 function AuthProvider({ children }) {
     const navigate = useNavigate();
     const [user, setUser] = React.useState(null);
+    const [blogdata, setBlogdata] = React.useState([
+        {
+            title: "¿Qué es React?",
+            slug: "que-es-react",
+            content: "React es el mejor framework de JavaScript.",
+            author: "juandc",
+        },
+        {
+            title: "¿Qué es Vue?",
+            slug: "que-es-vue",
+            content: "Vue es el mejor framework de JavaScript.",
+            author: "diannerd",
+        },
+        {
+            title: "¿Qué es Angular?",
+            slug: "que-es-angular",
+            content: "Angular es el mejor framework de JavaScript.",
+            author: "nicobytes",
+        },
+    ])
 
     const login = ({ username }) => {
         const isAdmin = adminList.find(admin => admin === username);
@@ -20,7 +40,27 @@ function AuthProvider({ children }) {
         navigate('/')
     }
 
-    const auth = { user, login, logout };
+    const generateSlug = (title) => {
+        return title
+            .toLowerCase()
+            .normalize("NFD") // Elimina acentos
+            .replace(/[\u0300-\u036f]/g, "") // Elimina diacríticos
+            .replace(/[¿?¡!]/g, "") // Elimina signos de interrogación/exclamación
+            .replace(/\s+/g, "-") // Reemplaza espacios con guiones
+            .replace(/[^a-z0-9\-]/g, ""); 
+    } 
+
+    const addBlogPost = (title, content) => {
+        if (!user) return;
+
+        const slug = generateSlug(title)
+        const newPost = { title, slug, content, author: user.username};
+
+        setBlogdata([...blogdata, newPost]);
+        navigate('/blog');
+    }
+
+    const auth = { user, login, logout, blogdata, addBlogPost };
 
     return (
         <AuthContext.Provider value={auth}>
