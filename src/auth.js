@@ -60,7 +60,12 @@ function AuthProvider({ children }) {
         navigate('/blog');
     }
 
-    const auth = { user, login, logout, blogdata, addBlogPost };
+    const deleteBlogPost = (slug) => {
+        setBlogdata(prevBlogdata => prevBlogdata.filter(post => post.slug !== slug));
+        navigate('/blog')
+    }
+
+    const auth = { user, login, logout, blogdata, addBlogPost, deleteBlogPost };
 
     return (
         <AuthContext.Provider value={auth}>

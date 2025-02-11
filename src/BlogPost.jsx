@@ -20,6 +20,10 @@ function BlogPost() {
 
     const canDelete = auth.user?.isAdmin || blogpost.author === auth.user?.username;
 
+    const handleDelete = () => {
+        auth.deleteBlogPost(slug)
+    }
+
     const returnToBlog = () => {
         navigate('/blog');
     }
@@ -32,7 +36,9 @@ function BlogPost() {
             <p>{blogpost.content}</p>
 
             {canDelete && (
-                <button>Eliminar blogpost</button>
+                <button onClick={handleDelete} style={{ color: 'red', marginTop: '10px'}}>
+                    Eliminar blogpost
+                </button>
             )}
         </>
     )
