@@ -5,10 +5,11 @@ import { BlogPage } from './BlogPage';
 import { ProfilePage } from './ProfilePage';
 import { BlogPost } from './BlogPost';
 import { LoginPage } from './LoginPage';
-import './App.css';
 import { LogoutPage } from './LogoutPage';
 import { AuthProvider, AuthRoute } from './auth';
 import { NewBlogPostPage } from './NewBlogPostPage';
+import './App.css';
+import { EditBlog } from './EditBlog';
 
 function App() {
   return (
@@ -24,6 +25,15 @@ function App() {
               <Route path=':slug' element={<BlogPost/>} />
             </Route>
             
+            <Route 
+              path='/edit/:slug' 
+              element={
+                <AuthRoute>
+                  <EditBlog/>
+                </AuthRoute>
+              } 
+            />
+
             <Route 
               path='/newblog' 
               element={

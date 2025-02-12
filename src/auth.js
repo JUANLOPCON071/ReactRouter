@@ -31,8 +31,7 @@ function AuthProvider({ children }) {
 
     const login = ({ username }) => {
         const isAdmin = adminList.find(admin => admin === username);
-        setUser({ username, isAdmin });
-        navigate('/profile'); 
+        setUser({ username, isAdmin }); 
     }
 
     const logout = () => {
@@ -65,7 +64,14 @@ function AuthProvider({ children }) {
         navigate('/blog')
     }
 
-    const auth = { user, login, logout, blogdata, addBlogPost, deleteBlogPost };
+    const editBlogPost = (slug, newTitle, newContent) => {
+        setBlogdata(prevBlogdata => prevBlogdata.map(post => 
+            post.slug === slug ? 
+            {...post, title: newTitle, content: newContent} : post
+        ))
+    }
+
+    const auth = { user, login, logout, blogdata, addBlogPost, deleteBlogPost, editBlogPost };
 
     return (
         <AuthContext.Provider value={auth}>
