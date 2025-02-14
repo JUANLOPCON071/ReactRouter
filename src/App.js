@@ -8,8 +8,9 @@ import { LoginPage } from './LoginPage';
 import { LogoutPage } from './LogoutPage';
 import { AuthProvider, AuthRoute } from './auth';
 import { NewBlogPostPage } from './NewBlogPostPage';
-import './App.css';
 import { EditBlog } from './EditBlog';
+import './App.css';
+import { UserProfile } from './UserProfile';
 
 function App() {
   return (
@@ -52,14 +53,10 @@ function App() {
                 </AuthRoute>
               } 
             />
-            <Route 
-              path='/profile' 
-              element={
-                <AuthRoute>
-                  <ProfilePage/>
-                </AuthRoute>
-              }
-            />
+            
+            <Route path='/profile' element={<ProfilePage/>}/>
+            <Route path='/profile/:name' element={<UserProfile/>} />
+              
             <Route path='*' element={<p>Not found</p>} />
           </Routes>
         </AuthProvider>

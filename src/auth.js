@@ -1,13 +1,31 @@
 import React from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
-const adminList = ['Irisval', 'RetaxMaster', 'Freddier']
-
 const AuthContext = React.createContext();
 
 function AuthProvider({ children }) {
     const navigate = useNavigate();
     const [user, setUser] = React.useState(null);
+    const [users, setUsers] = React.useState([
+        {
+            name:'Irisval',
+            direccion: 'Avenida Platzi #15-42',
+            edad: 24,
+            cargo: 'Desarrollador full stack React.js'
+        }, 
+        {
+            name:'RetaxMaster',
+            direccion: 'Calle 5a #23-36',
+            edad: 30,
+            cargo: 'Recursos humanos'
+        }, 
+        {
+            name:'Freddier',
+            direccion: 'Carrera 15 #17-55',
+            edad: 36,
+            cargo: 'Gerente  Genral'
+        },
+    ])
     const [blogdata, setBlogdata] = React.useState([
         {
             title: "¿Qué es React?",
@@ -30,8 +48,22 @@ function AuthProvider({ children }) {
     ])
 
     const login = ({ username }) => {
-        const isAdmin = adminList.find(admin => admin === username);
+        const isAdmin = users.find(user => user.name === username);
         setUser({ username, isAdmin }); 
+
+        const userExists = users.some(user => user.name === username);
+
+        if (!userExists) {
+            setUsers(prevUsers => [
+                ...prevUsers,
+                {
+                    name: username,
+                    direccion: 'falta agregar direccion',
+                    edad: 'poner edad',
+                    cargo: 'Falta poner cargo'
+                }
+            ])
+        }
     }
 
     const logout = () => {
@@ -71,7 +103,20 @@ function AuthProvider({ children }) {
         ))
     }
 
-    const auth = { user, login, logout, blogdata, addBlogPost, deleteBlogPost, editBlogPost };
+    const editProfile = (updatedUserData) => {
+        if (!user) return;
+
+        setUsers(prevUsers => prevUsers.map(u => 
+            u.name === user.username ? {...u, ...updatedUserData} : u
+        ));
+
+        setUser(prevUser => ({
+            ...prevUser,
+            username: updatedUserData.name || prevUser.username
+        }))
+    }
+
+    const auth = { user, login, logout, blogdata, addBlogPost, deleteBlogPost, editBlogPost, editProfile, users };
 
     return (
         <AuthContext.Provider value={auth}>
